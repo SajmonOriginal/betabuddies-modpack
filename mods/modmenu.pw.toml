@@ -1,0 +1,15 @@
+name = "ModMenu"
+filename = "modmenu-bta-5.0.2.jar"
+side = "client"
+
+[download]
+url = "https://github.com/Turnip-Labs/ModMenu/releases/download/5.0.2/modmenu-bta-5.0.2.jar"
+hash-format = "sha256"
+hash = "29f0c4322cebed443e542aa97e892701477e9dacda79fda370f660f2d9c10c33"
+
+[update]
+[update.github]
+branch = "bta/8.0"
+regex = "^modmenu-bta-[0-9.]+\\.jar$"
+slug = "Turnip-Labs/ModMenu"
+tag = "5.0.2"

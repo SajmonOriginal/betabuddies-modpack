@@ -1,0 +1,74 @@
+hash-format = "sha256"
+
+[[files]]
+file = "config/aether.cfg"
+hash = "faa480f2e60d729db17e0873aff6102b9f8d887b2a52fb3979a8c9aeebd4c0b4"
+
+[[files]]
+file = "config/betterwithbags.cfg"
+hash = "84edb2027c069940539c83cafe585a0652ed4fbac502ac003862d28d9414624b"
+
+[[files]]
+file = "config/catalyst-effects.cfg"
+hash = "a09aabf3916b6b027e532d74ffc6bd3a1d76d2500cbc04d45d8f313f44c043a8"
+
+[[files]]
+file = "config/catalyst-energy.cfg"
+hash = "531d05b9a135f4e21502ea91491898bbeaaf260177b80a01b09f8451f97857e0"
+
+[[files]]
+file = "config/catalyst-multipart.cfg"
+hash = "6d42add1627fec260ef3cea4c65ace09c6b29113ab539209ba9c0e09b00ec8ec"
+
+[[files]]
+file = "config/halplibe.cfg"
+hash = "867262422795ae5ff279dbc8670ef7ed250aea32208624db4e9437161d3f7aa1"
+
+[[files]]
+file = "config/stardew.cfg"
+hash = "2795c5ed9f589c12d112e5738ea26469e5b97a964de9868f8688a72f1dea71c3"
+
+[[files]]
+file = "mods/better-with-aether.pw.toml"
+hash = "2e144396517eb93e11844532647c224000b3233ef48c37a4fd424681cf2ccebd"
+metafile = true
+
+[[files]]
+file = "mods/better-with-arachnophobia.pw.toml"
+hash = "d44e64aa76c5b94c4b436ba407c175ac4277a1717ef628cefdb8e1848ff6ac2d"
+metafile = true
+
+[[files]]
+file = "mods/better-with-bags.pw.toml"
+hash = "a6dce552b73981a9797e638f06bb9e42a965a914ffc1863ef507474f6ecd28f8"
+metafile = true
+
+[[files]]
+file = "mods/better-with-hands.pw.toml"
+hash = "e6e49c193577901eb7b80d3806df14ca8f457d08c24c59b994e3e72b9fc13959"
+metafile = true
+
+[[files]]
+file = "mods/bta-halplibe.pw.toml"
+hash = "169531c66deb665147a4e02ed3b07995d5c65aa15fcffff7e827b34c904ebd1e"
+metafile = true
+
+[[files]]
+file = "mods/catalyst.pw.toml"
+hash = "486f77eea72d5a20fae81f0951d294bfb133e6afcb6ad64d68511827a59c22d5"
+metafile = true
+
+[[files]]
+file = "mods/modmenu.pw.toml"
+hash = "bef4e462876d6d63db2be3fac4cabd18351c2a4561021444ef9bac8b44be167e"
+metafile = true
+
+[[files]]
+file = "mods/stardew-farming-bta.pw.toml"
+hash = "23f8594486d07e9089596c18627b8ac39482fc394b7aa2a7fd2f0a9b9bbde8f7"
+metafile = true
+
+[[files]]
+file = "mods/uselessnumerical.pw.toml"
+hash = "14eb4102b37c90b716f0bef5f3419b9ec00b17b5ae1c83fb53346072dd4f968f"
+metafile = true

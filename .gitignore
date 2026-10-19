@@ -1,0 +1,8 @@
+# packwiz downloads jars into a cache, never into the repo
+*.jar
+!instance/**/*.jar
+.packwiz-cache/
+build/
+
+# infra config lives outside this repo
+deploy/

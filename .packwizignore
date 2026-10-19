@@ -1,0 +1,9 @@
+.git/*
+.github/*
+.gitignore
+.packwizignore
+README.md
+RELEASE_NOTES.md
+build/*
+deploy/*
+instance/*

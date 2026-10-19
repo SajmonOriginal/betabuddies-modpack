@@ -1,0 +1,15 @@
+name = "better-with-aether"
+filename = "better-with-aether-1.1.1.jar"
+side = "both"
+
+[download]
+url = "https://github.com/bta-team-port/better-with-aether/releases/download/1.1.1%2B8.0.1/better-with-aether-1.1.1.jar"
+hash-format = "sha256"
+hash = "5b4467f89c6b77bed0e97bed62ca9d9254e809b01df3b9da891f896323a485bf"
+
+[update]
+[update.github]
+branch = "8.0"
+regex = "^better-with-aether-[0-9.]+\\.jar$"
+slug = "bta-team-port/better-with-aether"
+tag = "1.1.1+8.0.1"

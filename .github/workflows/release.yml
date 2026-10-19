@@ -1,0 +1,168 @@
+name: Release modpack
+
+# Tag a vX.Y.Z and the runner exports an auto-updating Prism instance zip and
+# attaches it to the matching GitHub Release.
+#
+# Only a Prism zip is produced - no .mrpack / CurseForge export. BTA is not a
+# loader either platform understands (see README, "Why GitHub and not
+# Modrinth"), and the BTA base install can only be expressed as MultiMC
+# components + patches/, which is what the Prism zip carries.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to publish (e.g. v2.0.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+      # packwiz-installer-bootstrap fetches this on every launch and resolves
+      # index.toml plus every tracked file relative to it.
+      PACK_URL: https://pack.betabuddies.xyz/pack.toml
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
+
+      - name: Set up Go (for packwiz)
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Install packwiz
+        run: go install github.com/packwiz/packwiz@latest
+
+      - name: Sync pack version with the tag
+        run: |
+          set -euo pipefail
+          VER="${TAG#v}"
+          sed -i "s/^version = .*/version = \"$VER\"/" pack.toml
+          packwiz refresh
+          echo "PACK_VERSION=$VER" >> "$GITHUB_ENV"
+
+      - name: Verify index is committed and current
+        # packwiz refresh must be a no-op on a correctly committed repo. If it
+        # changed anything, someone edited mods/ or config/ without refreshing
+        # and index.toml hashes are stale - players would silently get the old
+        # files. Fail loudly instead.
+        run: |
+          set -euo pipefail
+          git diff --quiet -- index.toml mods config || {
+            echo "::error::index.toml is stale - run 'packwiz refresh' and commit"
+            git --no-pager diff --stat -- index.toml mods config
+            exit 1
+          }
+
+      - name: Build Prism Launcher instance (.zip)
+        # The BTA base (client jarmod + fabric-bta loader + lwjgl) lives in
+        # instance/patches/ and resolves from public URLs at install time, so
+        # the zip stays ~100 KB. Mods are NOT bundled - the bootstrap pulls
+        # them from the pack on each launch, which is what makes it
+        # self-updating.
+        run: |
+          set -euo pipefail
+          STAGE=prism-stage
+          rm -rf "$STAGE"
+          cp -r instance "$STAGE"
+
+          curl -fsSL -o "$STAGE/minecraft/packwiz-installer-bootstrap.jar" \
+            https://github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar
+
+          cat > "$STAGE/instance.cfg" <<EOF
+          [General]
+          InstanceType=OneSix
+          ConfigVersion=1.3
+          name=Beta Buddies ${PACK_VERSION}
+          iconKey=betabuddies.png
+          notes=Beta Buddies - BTA 8.0.1. Mody se aktualizuji automaticky pri kazdem spusteni.
+          JoinServerOnLaunch=false
+          AutomaticJava=true
+          JavaVendor=Adoptium
+          IgnoreJavaCompatibility=false
+          ExportOptionalFiles=true
+          GlobalDataPacksEnabled=false
+          LogPrePostOutput=true
+          LowMemWarning=true
+          ManagedPack=false
+          OverrideModDownloadLoaders=true
+          ModDownloadLoaders=[\\"bta-babric\\"]
+          OverrideJavaArgs=true
+          JvmArgs="-Djava.awt.headless=true"
+          OverrideMemory=true
+          MinMemAlloc=512
+          MaxMemAlloc=4096
+          PermGen=128
+          OverrideCommands=true
+          PreLaunchCommand=\\"\$INST_JAVA\\" -jar \\"\$INST_MC_DIR/packwiz-installer-bootstrap.jar\\" -g -s client ${PACK_URL}
+          OverrideConsole=false
+          OverrideEnv=false
+          OverrideGameTime=false
+          OverrideLegacySettings=false
+          OverrideMiscellaneous=false
+          OverrideNativeWorkarounds=false
+          OverridePerformance=false
+          OverrideWindow=false
+          UseAccountForInstance=false
+          EOF
+
+          OUT="Beta-Buddies-${PACK_VERSION}-Prism.zip"
+          ( cd "$STAGE" && zip -qr "../$OUT" . )
+          unzip -l "$OUT"
+
+      - name: Smoke-test the pack resolves
+        # Serve the pack locally and run the real bootstrap against it with the
+        # same Java major Prism uses for BTA. Catches a broken mod URL or a
+        # stale hash before players do.
+        run: |
+          set -euo pipefail
+          packwiz serve --port 18080 &
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:18080/pack.toml >/dev/null 2>&1 && break
+            sleep 1
+          done
+
+          mkdir -p smoke
+          curl -fsSL -o smoke/packwiz-installer-bootstrap.jar \
+            https://github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar
+          ( cd smoke && java -jar packwiz-installer-bootstrap.jar -g -s client \
+              http://127.0.0.1:18080/pack.toml )
+
+          EXPECTED=$(ls mods/*.pw.toml | wc -l)
+          ACTUAL=$(ls smoke/mods/*.jar 2>/dev/null | wc -l)
+          echo "metafiles=$EXPECTED installed jars=$ACTUAL"
+          [ "$EXPECTED" = "$ACTUAL" ] || { echo "::error::pack did not fully resolve"; exit 1; }
+
+      - name: Resolve release notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -f RELEASE_NOTES.md ]; then
+            cp RELEASE_NOTES.md release-body.md
+          elif gh release view "$TAG" --json body --jq .body > release-body.md 2>/dev/null && [ -s release-body.md ]; then
+            echo "Reusing existing release body."
+          else
+            gh api -X POST "/repos/${GITHUB_REPOSITORY}/releases/generate-notes" \
+              -f tag_name="$TAG" --jq .body > release-body.md
+          fi
+          cat release-body.md
+
+      - name: Upload to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --notes-file release-body.md
+          else
+            gh release create "$TAG" --title "$TAG" --notes-file release-body.md
+          fi
+          gh release upload "$TAG" "Beta-Buddies-${PACK_VERSION}-Prism.zip" --clobber

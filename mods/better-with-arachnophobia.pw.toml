@@ -1,0 +1,15 @@
+name = "better-with-arachnophobia"
+filename = "better_with_arachnophobia-1.0.0+8.0.1.jar"
+side = "client"
+
+[download]
+url = "https://github.com/MinecraftLabs/better-with-arachnophobia/releases/download/v1.0.0/better_with_arachnophobia-1.0.0%2B8.0.1.jar"
+hash-format = "sha256"
+hash = "2be30a2d639e8ee0a8abe3c10fe9488266de2bd5c2be316d1875b42ff9dc9ba6"
+
+[update]
+[update.github]
+branch = "main"
+regex = "^better_with_arachnophobia-[0-9.]+\\+[0-9.]+\\.jar$"
+slug = "MinecraftLabs/better-with-arachnophobia"
+tag = "v1.0.0"

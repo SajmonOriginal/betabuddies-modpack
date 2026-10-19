@@ -1,0 +1,15 @@
+name = "bta-halplibe"
+filename = "halplibe-6.2.0+8.0.1.jar"
+side = "both"
+
+[download]
+url = "https://github.com/Turnip-Labs/bta-halplibe/releases/download/v6.2.0/halplibe-6.2.0%2B8.0.1.jar"
+hash-format = "sha256"
+hash = "e356322d5ce3fda6631a322347451d5ad85704207870c0937d6193a9bc9f1738"
+
+[update]
+[update.github]
+branch = "8.0"
+regex = "^halplibe-[0-9.]+\\+[0-9.]+\\.jar$"
+slug = "Turnip-Labs/bta-halplibe"
+tag = "v6.2.0"
