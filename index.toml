@@ -40,7 +40,7 @@ metafile = true
 
 [[files]]
 file = "mods/better-with-bags.pw.toml"
-hash = "a6dce552b73981a9797e638f06bb9e42a965a914ffc1863ef507474f6ecd28f8"
+hash = "e5d54e46ee8c31cea8a9350d903963e10febb35c0e40ba5810fb58e4f935434d"
 metafile = true
 
 [[files]]
@@ -65,7 +65,7 @@ metafile = true
 
 [[files]]
 file = "mods/stardew-farming-bta.pw.toml"
-hash = "23f8594486d07e9089596c18627b8ac39482fc394b7aa2a7fd2f0a9b9bbde8f7"
+hash = "a2030e50df14233ea9ad3874e69af84e04dbe0f5a3b501c1835aa50f3fd35745"
 metafile = true
 
 [[files]]

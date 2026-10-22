@@ -1,15 +1,15 @@
 name = "stardew-farming-bta"
-filename = "stardew-3.5.6+8.0.1.jar"
+filename = "stardew-3.5.8+8.0.1.jar"
 side = "both"
 
 [download]
-url = "https://github.com/Redart15/stardew-farming-bta/releases/download/3.5.6%2B8.0.1/stardew-3.5.6%2B8.0.1.jar"
+url = "https://github.com/Redart15/stardew-farming-bta/releases/download/3.5.8%2B8.0.1/stardew-3.5.8%2B8.0.1.jar"
 hash-format = "sha256"
-hash = "cfb4264d4ef20f627f170b0e8c4244b7863c18aa94f15aaa47657e5f4ba202ae"
+hash = "0cbfcad7a8f84ed537db3790602e2b1b1813c087e82f911c81a063f8d3b6d1b0"
 
 [update]
 [update.github]
 branch = "8.0"
 regex = "^stardew-[0-9.]+\\+[0-9.]+\\.jar$"
 slug = "Redart15/stardew-farming-bta"
-tag = "3.5.6+8.0.1"
+tag = "3.5.8+8.0.1"
