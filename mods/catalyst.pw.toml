@@ -1,15 +1,15 @@
 name = "catalyst"
-filename = "catalyst-all-3.1.6.jar"
+filename = "catalyst-all-3.2.0.jar"
 side = "both"
 
 [download]
-url = "https://github.com/MartinSVK12/catalyst/releases/download/3.1.6/catalyst-all-3.1.6.jar"
+url = "https://github.com/MartinSVK12/catalyst/releases/download/3.2.0/catalyst-all-3.2.0.jar"
 hash-format = "sha256"
-hash = "691e877450b19f76bea12c29470b0179f754208bdbedd0418e064dd17239274e"
+hash = "4835fd65b78edfc30bb07ac6275514b3ac8dbad45d1329d4df054dc340aa9cff"
 
 [update]
 [update.github]
 branch = "8.0"
 regex = "^catalyst-all-[0-9.]+\\.jar$"
 slug = "MartinSVK12/catalyst"
-tag = "3.1.6"
+tag = "3.2.0"

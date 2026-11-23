@@ -1,12 +1,12 @@
 name = "Beta Buddies"
 author = "Sajmon"
-version = "2.0.0"
+version = "2.1.0"
 pack-format = "packwiz:1.1.0"
 
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "10e6ab8a4939acad6b9e35d4951c946a3d59d5f6cb91e17640e29a7db00c59ed"
+hash = "736d73848ea80c00f68e263f166411973107768c23a9997a2912929eecb32733"
 
 [versions]
 minecraft = "b1.7.3"
